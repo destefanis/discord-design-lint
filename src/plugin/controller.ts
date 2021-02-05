@@ -3,7 +3,9 @@ import {
   checkEffects,
   checkFills,
   checkStrokes,
-  checkType
+  checkType,
+  checkBackgroundsforTextFills,
+  checkTextforBackgroundFills
 } from "./lintingFunctions";
 
 figma.showUI(__html__, { width: 360, height: 580 });
@@ -318,7 +320,7 @@ figma.ui.onmessage = msg => {
     //   );
     // }
 
-    checkFills(node, errors);
+    checkBackgroundsforTextFills(node, errors);
     checkRadius(node, errors, borderRadiusArray);
     checkEffects(node, errors);
     checkStrokes(node, errors);
@@ -346,7 +348,7 @@ figma.ui.onmessage = msg => {
   function lintFrameRules(node) {
     let errors = [];
 
-    checkFills(node, errors);
+    checkBackgroundsforTextFills(node, errors);
     checkStrokes(node, errors);
     checkRadius(node, errors, borderRadiusArray);
     checkEffects(node, errors);
@@ -358,7 +360,7 @@ figma.ui.onmessage = msg => {
     let errors = [];
 
     checkType(node, errors);
-    checkFills(node, errors);
+    checkTextforBackgroundFills(node, errors);
     checkEffects(node, errors);
     checkStrokes(node, errors);
 
@@ -368,7 +370,7 @@ figma.ui.onmessage = msg => {
   function lintRectangleRules(node) {
     let errors = [];
 
-    checkFills(node, errors);
+    checkBackgroundsforTextFills(node, errors);
     checkRadius(node, errors, borderRadiusArray);
     checkStrokes(node, errors);
     checkEffects(node, errors);
@@ -392,7 +394,7 @@ figma.ui.onmessage = msg => {
   function lintShapeRules(node) {
     let errors = [];
 
-    checkFills(node, errors);
+    checkBackgroundsforTextFills(node, errors);
     checkStrokes(node, errors);
     checkEffects(node, errors);
 

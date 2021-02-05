@@ -201,6 +201,119 @@ export function checkFills(node, errors) {
   }
 }
 
+// Custom Discord Function
+export function checkBackgroundsforTextFills(node, errors) {
+  let nodeFillStyle = node.fillStyleId;
+  nodeFillStyle = nodeFillStyle.replace("S:", "");
+  nodeFillStyle = nodeFillStyle.split(",")[0];
+
+  const TextFills = [
+    // Dark Theme
+    "5c1691cbeaaf4270107d34f1a12f02fdd04afa02",
+    "bc090cb3b1c7313ae276acbd791b5b87b478ec59",
+    "5c77a96137b698b5575557c069cabd6877d66e1e",
+    "5d84ad92f3ad152f196e2093a3c0542a08dfba11",
+    "bf03232753079bdd5bec6c55343b659876b5283f",
+    "287463bade90c1eed5ea4cb0b5d63794daa8aec2",
+    "502dcdf04992818dcbaed125ad711b446dee4c68",
+    "3eddc15e90bbd7064aea7cc13dc13e23a712f0b0",
+    "fa698aa2a724522a7c29efb0a662aec75a1be5a1",
+    // Light Theme
+    "b19a14675b8adeb1528ab5f84e57b2eeed10d46c",
+    "608f2ea1aa64ff7f202e8c22cc4147a02be9d85b",
+    "546c7d46e754ac2b23b338783d72f206b77b6436",
+    "7d8703ec132ddaf6968f6d190d1e80031c559d7c",
+    "64d3058dd508a4985670b2d19418a06a3503c9c2",
+    "9c23a031773711e026394f4354661c37ee5b4682",
+    "e9542e95adf3bbe74286c2cf279fee64f7ba3279",
+    "620c98e8f9255a6107dee91745669e5b702b413c",
+    "9328cd78a39149b070d68f98d9fe4df7a92bf67d"
+  ];
+
+  if (node.fills.length && node.visible === true) {
+    if (
+      node.fillStyleId === "" &&
+      node.fills[0].type !== "IMAGE" &&
+      node.fills[0].visible === true
+    ) {
+      // We may need an array to loop through fill types.
+      return errors.push(
+        createErrorObject(
+          node,
+          "fill",
+          "Missing fill style",
+          determineFill(node.fills)
+        )
+      );
+    } else if (TextFills.includes(nodeFillStyle)) {
+      return errors.push(
+        createErrorObject(
+          node,
+          "fill",
+          "Text color for background",
+          determineFill(node.fills)
+        )
+      );
+    } else {
+      return;
+    }
+  }
+}
+
+// Custom Discord Function
+export function checkTextforBackgroundFills(node, errors) {
+  let nodeFillStyle = node.fillStyleId;
+  nodeFillStyle = nodeFillStyle.replace("S:", "");
+  nodeFillStyle = nodeFillStyle.split(",")[0];
+
+  // Background Fills
+  const backgroundFills = [
+    // Dark theme backgrounds
+    "4b93d40f61be15e255e87948a715521c3ae957e6",
+    "fb1358e5bd6dec072801298238cf49ff77b79a4b",
+    "abf9ad88ae1ade1a4b945b012f0965c9cdc068c9",
+    "ef179b6abe6cb8779857e05a6333d33f7a2b9320",
+    "3dd0e30ce0a8287eb91ec1fbeff92031e634ed01",
+    "11516f4b43f381afb5a6bdf2c34b9437f0eecde1",
+    // Light theme backgrounds
+    "2449a2983d43793d80baa20c6c60e8a48e7f3a0c",
+    "83704278c845a6a7ceb1f837387972ccb6d41960",
+    "6acd84c794796d112d4e9d22c4c8a5cae940a61d",
+    "dbd02a76b7b77c1976114c04068f0fbc22015fab",
+    "9328cd78a39149b070d68f98d9fe4df7a92bf67d",
+    "6c8b08a42f9614842e880bf7bb795014d8fbae94"
+  ];
+
+  if (node.fills.length && node.visible === true) {
+    if (
+      node.fillStyleId === "" &&
+      node.fills[0].type !== "IMAGE" &&
+      node.fills[0].visible === true
+    ) {
+      // We may need an array to loop through fill types.
+      return errors.push(
+        createErrorObject(
+          node,
+          "fill",
+          "Missing fill style",
+          determineFill(node.fills)
+        )
+      );
+    } else if (backgroundFills.includes(nodeFillStyle)) {
+      return errors.push(
+        createErrorObject(
+          node,
+          "fill",
+          "Background color for text",
+          determineFill(node.fills)
+        )
+      );
+    } else {
+      return;
+    }
+  }
+}
+
 export function checkStrokes(node, errors) {
   if (node.strokes.length) {
     if (node.strokeStyleId === "" && node.visible === true) {
