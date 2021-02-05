@@ -201,12 +201,7 @@ export function checkFills(node, errors) {
   }
 }
 
-// Custom Discord Function
-export function checkBackgroundsforTextFills(node, errors) {
-  let nodeFillStyle = node.fillStyleId;
-  nodeFillStyle = nodeFillStyle.replace("S:", "");
-  nodeFillStyle = nodeFillStyle.split(",")[0];
-
+export function checkBackgroundsForTextFills(node, errors) {
   const TextFills = [
     // Dark Theme
     "5c1691cbeaaf4270107d34f1a12f02fdd04afa02",
@@ -230,43 +225,29 @@ export function checkBackgroundsforTextFills(node, errors) {
     "9328cd78a39149b070d68f98d9fe4df7a92bf67d"
   ];
 
-  if (node.fills.length && node.visible === true) {
-    if (
-      node.fillStyleId === "" &&
-      node.fills[0].type !== "IMAGE" &&
-      node.fills[0].visible === true
-    ) {
-      // We may need an array to loop through fill types.
-      return errors.push(
-        createErrorObject(
-          node,
-          "fill",
-          "Missing fill style",
-          determineFill(node.fills)
-        )
-      );
-    } else if (TextFills.includes(nodeFillStyle)) {
-      return errors.push(
-        createErrorObject(
-          node,
-          "fill",
-          "Text color for background",
-          determineFill(node.fills)
-        )
-      );
-    } else {
-      return;
-    }
-  }
-}
-
-// Custom Discord Function
-export function checkTextforBackgroundFills(node, errors) {
   let nodeFillStyle = node.fillStyleId;
+
+  // We strip the additional style key characters so we can check
+  // to see if the fill is being used incorrectly.
   nodeFillStyle = nodeFillStyle.replace("S:", "");
   nodeFillStyle = nodeFillStyle.split(",")[0];
 
-  // Background Fills
+  if (TextFills.includes(nodeFillStyle)) {
+    return errors.push(
+      createErrorObject(
+        node,
+        "fill",
+        "Incorrect text color use",
+        determineFill(node.fills)
+      )
+    );
+  } else {
+    checkFills(node, errors);
+  }
+}
+
+export function checkTextForBackgroundFills(node, errors) {
+  // Array of style keys we want to make sure aren't being used on text layers.
   const backgroundFills = [
     // Dark theme backgrounds
     "4b93d40f61be15e255e87948a715521c3ae957e6",
@@ -284,33 +265,24 @@ export function checkTextforBackgroundFills(node, errors) {
     "6c8b08a42f9614842e880bf7bb795014d8fbae94"
   ];
 
-  if (node.fills.length && node.visible === true) {
-    if (
-      node.fillStyleId === "" &&
-      node.fills[0].type !== "IMAGE" &&
-      node.fills[0].visible === true
-    ) {
-      // We may need an array to loop through fill types.
-      return errors.push(
-        createErrorObject(
-          node,
-          "fill",
-          "Missing fill style",
-          determineFill(node.fills)
-        )
-      );
-    } else if (backgroundFills.includes(nodeFillStyle)) {
-      return errors.push(
-        createErrorObject(
-          node,
-          "fill",
-          "Background color for text",
-          determineFill(node.fills)
-        )
-      );
-    } else {
-      return;
-    }
+  let nodeFillStyle = node.fillStyleId;
+
+  // We strip the additional style key characters so we can check
+  // to see if the fill is being used incorrectly.
+  nodeFillStyle = nodeFillStyle.replace("S:", "");
+  nodeFillStyle = nodeFillStyle.split(",")[0];
+
+  if (backgroundFills.includes(nodeFillStyle)) {
+    return errors.push(
+      createErrorObject(
+        node,
+        "fill",
+        "Incorrect background color use",
+        determineFill(node.fills)
+      )
+    );
+  } else {
+    checkFills(node, errors);
   }
 }
 
