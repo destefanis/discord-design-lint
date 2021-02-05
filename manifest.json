@@ -1,0 +1,7 @@
+{
+  "name": "Discord Design Lint",
+  "id": "",
+  "api": "1.0.0",
+  "main": "dist/code.js",
+  "ui": "dist/ui.html"
+}
