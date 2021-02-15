@@ -230,8 +230,6 @@ const App = ({}) => {
     };
   }, []);
 
-  let body;
-
   return (
     <div className="container">
       <AnimatePresence>

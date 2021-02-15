@@ -5,7 +5,7 @@ import {
   checkStrokes,
   checkType,
   checkBackgroundsForTextFills,
-  checkTextForBackgroundFills
+  customCheckTextFills
 } from "./lintingFunctions";
 
 figma.showUI(__html__, { width: 360, height: 580 });
@@ -360,7 +360,7 @@ figma.ui.onmessage = msg => {
     let errors = [];
 
     checkType(node, errors);
-    checkTextForBackgroundFills(node, errors);
+    customCheckTextFills(node, errors);
     checkEffects(node, errors);
     checkStrokes(node, errors);
 
